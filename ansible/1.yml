@@ -1,0 +1,36 @@
+---
+- hosts: localhost 
+  connection: local
+  gather_facts: no
+  vars:
+    project_dir: '/srv/terraform-poc'
+  tasks:
+    - name: Include Ansible Vault
+      include_vars: bastion.yml
+    - name: Launch Terraform 
+      terraform:
+        project_path: '{{ project_dir }}'
+        state: present
+        variables:
+          admin_user: "{{ tf_admin_user }}"
+          admin_pass: "{{ tf_admin_pass }}"
+          aws_access: "{{ aws_access }}"
+          aws_secret: "{{ aws_secret }}"
+      register: tf
+    - name: Debuging - testing
+      debug:
+        msg: '{{ tf.outputs }}'
+    - name: Set facts from output
+      vars:
+        line: "{{ item.public_dns }}	ansible_host={{ item.public_ip }}"
+      set_fact:
+        terra: "{{ terra | default([]) + [line] }}"
+      loop: "{{ tf.outputs.instances.value }}"
+    - name: Prepare data
+      set_fact:
+        terraform_data: "{{ terra | join('\n') }}"
+    - name: File from template
+      template:
+        src: "./terraform-inventory.tpl"
+        dest: "./terraform-inventory"
+      register: templateready

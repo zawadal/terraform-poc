@@ -1,0 +1,12 @@
+[windows]
+ec2-18-185-131-163.eu-central-1.compute.amazonaws.com	ansible_host=18.185.131.163
+ec2-18-195-106-142.eu-central-1.compute.amazonaws.com	ansible_host=18.195.106.142
+ec2-52-59-25-223.eu-central-1.compute.amazonaws.com	ansible_host=52.59.25.223
+
+[windows:vars]
+ansible_port = 5985
+ansible_connection = winrm
+ansible_winrm_transport = ntlm
+ansible_user = "aws-admin"
+ansible_password = "@Welcome123@"
+ansible_winrm_server_cert_validation = ignore

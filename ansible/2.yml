@@ -1,0 +1,10 @@
+---
+- hosts: all
+  gather_facts: no
+  tasks:
+    - name: Include vault file
+      include_vars: bastion.yml
+    - name: Perform some task on each host
+      win_shell: |
+        ipconfig /all >> C:\logdata.log
+        netstat -an  >> C:\logdata.log
