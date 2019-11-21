@@ -3,7 +3,7 @@
   connection: local
   gather_facts: no
   vars:
-    project_dir: '/srv/terraform-poc'
+    project_dir: '/srv/terraform-poc/terraform'
   tasks:
     - name: Include Ansible Vault
       include_vars: bastion.yml
