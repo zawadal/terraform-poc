@@ -64,41 +64,6 @@ resource "aws_instance" "WWWHosts" {
 	Add-LocalGroupMember -Group "Administrators" -Member $user
 	Add-LocalGroupMember -Group "Remote Management Users" -Member $user
 	Set-ItemProperty -Path HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name LocalAccountTokenFilterPolicy -Value 1
-        [DSCLocalConfigurationManager()]
-	Configuration LCMConfig
-	{
-		Node localhost
-		{
-			Settings
-			{
-				ConfigurationMode = 'ApplyAndAutoCorrect'
-			}
-		}
-	}
-
-	LCMConfig
-	Set-DscLocalConfigurationManager -Path .\LCMConfig -Verbose
-
-        Configuration WWWHostConfig
-	{
-		Node localhost
-		{
-			WindowsFeature "IIS_Server"
-			{
-				Name = "Web-Server"
-				Ensure = "Present"
-			}
-			Service "IIS_Service_running"
-			{
-				Name = "W3SVC"
-				State = "Running"
-				DependsOn = "[WindowsFeature]IIS_Server"
-			}
-		}
-	}
-
-	WWWHostConfig
-	Start-DSCConfiguration -Path .\WWWHostConfig -Verbose -Force -Wait  
   </powershell>
   EOF
 }
