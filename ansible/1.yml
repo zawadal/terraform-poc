@@ -32,5 +32,5 @@
     - name: File from template
       template:
         src: "./terraform-inventory.tpl"
-        dest: "./terraform-inventory"
+        dest: "./ansible-terraform-inventory"
       register: templateready
