@@ -9,6 +9,7 @@
       include_vars: bastion.yml
     - name: Launch Terraform 
       terraform:
+        force_init: yes      
         project_path: '{{ project_dir }}'
         state: present
         variables:
