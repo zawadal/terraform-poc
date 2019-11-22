@@ -4,7 +4,19 @@
   tasks:
     - name: Include vault file
       include_vars: bastion.yml
+    - name: Create directory structure on remote machine
+      win_file:
+        path: C:\DSC
+        state: directory
+    - name: Copy DSC configuration to target machines
+      win_copy:
+        src: ../DSC/
+        dest: C:\DSC\
+      with_fileglob: ../DSC/*
+      delegate: localhost
     - name: Perform some task on each host
       win_shell: |
-        ipconfig /all >> C:\logdata.log
-        netstat -an  >> C:\logdata.log
+        Get-ChildItem C:\DSC\*.ps1 | ForEach-Object { & $_.FullName }
+    - name: Create IIS goods
+      win_shell: |
+        Get-Process | Select-Object name,Id,@{Name='Memory(MB)';Expression={$_.WorkingSet / 1MB }},TotalProcessorTime,Path,Product | ConvertTo-Html -Body "<h1>System process list on $(hostname)</h1>" -Title "System process list on $(hostname)" -CssUri C:\DSC\style.css | Out-File C:\initpub\index.html -Force
