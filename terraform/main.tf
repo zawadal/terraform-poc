@@ -64,6 +64,7 @@ resource "aws_instance" "WWWHosts" {
 	Add-LocalGroupMember -Group "Administrators" -Member $user
 	Add-LocalGroupMember -Group "Remote Management Users" -Member $user
 	Set-ItemProperty -Path HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name LocalAccountTokenFilterPolicy -Value 1
+	Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
   </powershell>
   EOF
 }
