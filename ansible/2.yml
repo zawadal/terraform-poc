@@ -13,7 +13,6 @@
         src: ../DSC/
         dest: C:\DSC\
       with_fileglob: ../DSC/*
-      delegate: localhost
     - name: Perform some task on each host
       win_shell: |
         Get-ChildItem C:\DSC\*.ps1 | ForEach-Object { & $_.FullName }
