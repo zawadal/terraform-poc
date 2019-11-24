@@ -18,4 +18,9 @@
         Get-ChildItem C:\DSC\*.ps1 | ForEach-Object { & $_.FullName }
     - name: Create IIS goods
       win_shell: |
-        Get-Process | Select-Object name,Id,@{Name='Memory(MB)';Expression={$_.WorkingSet / 1MB }},TotalProcessorTime,Path,Product | ConvertTo-Html -Body "<h1>System process list on $(hostname)</h1>" -Title "System process list on $(hostname)" -CssUri C:\DSC\style.css | Out-File C:\initpub\index.html -Force
+        Get-Process | Select-Object name,Id,@{Name='Memory(MB)';Expression={$_.WorkingSet / 1MB }},TotalProcessorTime,Path,Product | ConvertTo-Html -Body "<h1>System process list on $(hostname)</h1>" -Title "System process list on $(hostname)" -CssUri C:\DSC\style.css | Out-File C:\DSC\iisstart.htm
+    - name: Copy IIS goods
+      win_copy:
+        src: C:\DSC\iisstart.htm
+        dest: C:\inetpub\wwwroot\
+        remote_src: yes
