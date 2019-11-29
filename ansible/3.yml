@@ -1,0 +1,19 @@
+---
+- hosts: localhost 
+  connection: local
+  gather_facts: no
+  vars:
+    project_dir: '/srv/terraform-poc/terraform'
+  tasks:
+    - name: Include Ansible Vault
+      include_vars: bastion.yml
+    - name: Launch Terraform 
+      terraform:
+        project_path: '{{ project_dir }}'
+        state: absent 
+        variables:
+          admin_user: "{{ tf_admin_user }}"
+          admin_pass: "{{ tf_admin_pass }}"
+          aws_access: "{{ aws_access }}"
+          aws_secret: "{{ aws_secret }}"
+      register: tf
